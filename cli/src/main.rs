@@ -121,6 +121,7 @@ fn run() -> error::Result<()> {
                         .short("f")
                         .takes_value(true),
                 )
+                .arg(Arg::with_name("update").long("update").short("u"))
                 .arg(Arg::with_name("debug").long("debug").short("d"))
                 .arg(Arg::with_name("debug-graph").long("debug-graph").short("D")),
         )
@@ -200,7 +201,8 @@ fn run() -> error::Result<()> {
             test_corpus_dir = current_dir.join("corpus");
         }
         if test_corpus_dir.is_dir() {
-            test::run_tests_at_path(*language, &test_corpus_dir, debug, debug_graph, filter)?;
+            let update = matches.is_present("update");
+            test::run_tests_at_path(*language, &test_corpus_dir, debug, debug_graph, filter, update)?;
         }
 
         // Check that all of the queries are valid.
