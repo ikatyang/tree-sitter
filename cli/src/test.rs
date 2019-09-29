@@ -16,11 +16,11 @@ use tree_sitter::{Language, LogType, Parser, Query};
 use walkdir::WalkDir;
 
 lazy_static! {
-    static ref HEADER_REGEX: ByteRegex = ByteRegexBuilder::new(r"^===+\r?\n([^=]*)\r?\n===+\r?\n")
+    static ref HEADER_REGEX: ByteRegex = ByteRegexBuilder::new(r"^={80}\r?\n(.*)\r?\n={80}\r?\n")
         .multi_line(true)
         .build()
         .unwrap();
-    static ref DIVIDER_REGEX: ByteRegex = ByteRegexBuilder::new(r"^---+\r?\n")
+    static ref DIVIDER_REGEX: ByteRegex = ByteRegexBuilder::new(r"^-{80}\r?\n")
         .multi_line(true)
         .build()
         .unwrap();
