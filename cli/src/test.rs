@@ -403,7 +403,7 @@ fn parse_test_content(name: String, content: String, file_path: Option<PathBuf>)
 
                     // Identify if the expected output has fields indicated. If not, then
                     // fields will not be checked.
-                    let has_fields = SEXP_FIELD_REGEX.is_match(&output);
+                    let has_fields = true;
 
                     children.push(TestEntry::Example {
                         name: prev_name,
