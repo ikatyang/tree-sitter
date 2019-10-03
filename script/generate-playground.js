@@ -23,7 +23,7 @@ module.exports = (outputDirname, { name, example }) => {
     grammar_id: packageJson.name.split("-").pop(),
     grammar_version: packageJson.version,
     grammar_repository: packageJson.repository,
-    grammar_example: example
+    grammar_example: example.replace(/`/g, "\\`"),
   };
   const config_yml = `
 tree_sitter:
