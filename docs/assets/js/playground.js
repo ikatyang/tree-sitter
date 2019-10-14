@@ -103,7 +103,7 @@ let tree;
   }
 
   async function handleCodeChange(editor, changes) {
-    const newText = codeEditor.getValue() + '\n';
+    const newText = codeEditor.getValue();
     const edits = tree && changes && changes.map(treeEditForEditorChange);
 
     const start = performance.now();
