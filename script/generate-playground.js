@@ -23,7 +23,7 @@ module.exports = (outputDirname, { name, example }) => {
     grammar_id: packageJson.name.split("-").pop(),
     grammar_version: packageJson.version,
     grammar_repository: packageJson.repository,
-    grammar_example: example.replace(/`/g, "\\`"),
+    grammar_example: example.replace(/`/g, "\\`").replace(/<\/script(\s*)>/g, '<\\/script$1>'),
   };
   const config_yml = `
 tree_sitter:
