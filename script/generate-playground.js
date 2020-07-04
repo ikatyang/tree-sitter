@@ -3,7 +3,7 @@ const child_process = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
-module.exports = (outputDirname, { name, example }) => {
+module.exports = (outputDirname, { name, example, codeExample, queryExample }) => {
   assert(!fs.existsSync(outputDirname));
   fs.mkdirSync(outputDirname);
 
@@ -16,14 +16,15 @@ module.exports = (outputDirname, { name, example }) => {
   const packageJson = require(fromGrammar("package.json"));
 
   assert(/^tree-sitter-[a-z]+$/.test(packageJson.name));
+  const escape_example = x => x.replace(/`/g, "\\`").replace(/<\/script(\s*)>/g, '<\\/script$1>')
   const config = {
-    tree_sitter_version: require(fromTreeSitter("cli/npm/package.json"))
-      .version,
+    tree_sitter_version: require(fromTreeSitter("cli/npm/package.json")).version,
     grammar_name: name,
     grammar_id: packageJson.name.split("-").pop(),
     grammar_version: packageJson.version,
     grammar_repository: packageJson.repository,
-    grammar_example: example.replace(/`/g, "\\`").replace(/<\/script(\s*)>/g, '<\\/script$1>'),
+    grammar_code_example: escape_example(codeExample || example),
+    grammar_query_example: escape_example(queryExample),
   };
   const config_yml = `
 tree_sitter:
@@ -33,11 +34,9 @@ grammar:
   id: ${config.grammar_id}
   version: ${config.grammar_version}
   repository: ${config.grammar_repository}
-  example: |
-${config.grammar_example
-  .split("\n")
-  .map(x => `    ${x}`)
-  .join("\n")}
+  example:
+    code: ${JSON.stringify(config.grammar_code_example)}
+    query: ${JSON.stringify(config.grammar_query_example)}
 `;
   const configFilename = "_config.generated.yml";
   fs.writeFileSync(fromTreeSitter(`docs/${configFilename}`), config_yml);
