@@ -24,7 +24,7 @@ module.exports = (outputDirname, { name, example, codeExample, queryExample }) =
     grammar_version: packageJson.version,
     grammar_repository: packageJson.repository,
     grammar_code_example: escape_example(codeExample || example),
-    grammar_query_example: escape_example(queryExample),
+    grammar_query_example: escape_example(queryExample || ''),
   };
   const config_yml = `
 tree_sitter:
